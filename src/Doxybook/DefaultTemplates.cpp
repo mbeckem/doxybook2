@@ -343,7 +343,7 @@ static std::string createTableForTypeLike(const std::string& visibility,
     ss << "{% endfor %}\\> <br>{% endif -%}\n";
 
     ss << "{{child.kind}}{% if child.kind == \"enum\" and child.strong %} class{% endif %}";
-    ss << "{% if existsIn(child, \"type\") %} {{child.type}} {% endif -%}";
+    ss << "{% if existsIn(child, \"type\") %} {{escape(child.type)}} {% endif -%}";
 
     ss << "| **[{{child.name}}]({{child.url}})** ";
     ss << "{% if child.kind == \"enum\" %}{ ";
@@ -373,7 +373,7 @@ static std::string createTableForAttributeLike(const std::string& visibility,
 
     ss << "{% for child in " << (inherited ? "base." : "") << key << " -%}\n";
 
-    ss << "| {% if existsIn(child, \"type\") %}{{child.type}} {% endif -%}\n";
+    ss << "| {% if existsIn(child, \"type\") %}{{escape(child.type)}} {% endif -%}\n";
     ss << "| **[{{child.name}}]({{child.url}})**";
     ss << " {% if existsIn(child, \"brief\") %}<br>{{child.brief}}{% endif %} |\n";
 
@@ -445,7 +445,7 @@ static std::string createTableForFunctionLike(const std::string& visibility,
     ss << "| **[{{child.name}}]({{child.url}})**";
 
     ss << "({% for param in child.params -%}\n";
-    ss << "{{param.type}} {{param.name}}";
+    ss << "{{escape(param.type)}} {{param.name}}";
     ss << "{% if existsIn(param, \"defval\") %} ={{param.defval}}{% endif -%}\n";
     ss << "{% if not loop.is_last %}, {% endif -%}\n";
     ss << "{% endfor %})";
